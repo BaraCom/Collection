@@ -9,7 +9,7 @@ public class Counting {
     private static final String EXIT = "3";
 
     public static void startApp() {
-        HashMap<String, String> resultMap = new HashMap<>();
+        HashMap<String, String> cache = new HashMap<>();
         Scanner scan = new Scanner(System.in);
         boolean flag = true;
 
@@ -21,16 +21,10 @@ public class Counting {
                 case ENTER_MESSAGE:
                     System.out.println("message: ");
                     inputLine = scan.nextLine();
-
-                    if (isContainsKeys(resultMap, inputLine)) {
-                        System.out.println(resultMap.get(inputLine));
-                    } else {
-                        addedToMap(resultMap, inputLine);
-                        System.out.println("\n" + resultMap.get(inputLine));
-                    }
+                    getResultMessage(cache, inputLine);
                     break;
                 case SHOW_CACHE:
-                    showCache(resultMap);
+                    showCache(cache);
                     break;
                 case EXIT:
                     System.out.println("\n-+  See you...  +-");
@@ -52,8 +46,8 @@ public class Counting {
             + "---------------------\n");
     }
 
-    private static void showCache(HashMap<String, String> resultMap) {
-        for (HashMap.Entry<String, String> entry : resultMap.entrySet()) {
+    private static void showCache(HashMap<String, String> cache) {
+        for (HashMap.Entry<String, String> entry : cache.entrySet()) {
             System.out.println("_______\n"
                 + entry.getKey() + "\n" + entry.getValue()
                 + "_______");
@@ -82,11 +76,20 @@ public class Counting {
         return resultLine;
     }
 
-    private static boolean isContainsKeys(HashMap<String, String> resultMap, String inputLine) {
-        return resultMap.containsKey(inputLine);
+    private static boolean isContainsKeys(HashMap<String, String> cache, String inputLine) {
+        return cache.containsKey(inputLine);
     }
 
-    private static void addedToMap(HashMap<String, String> resultMap, String inputLine) {
-        resultMap.put(inputLine, getLineCountingWords(inputLine));
+    private static void addedToMap(HashMap<String, String> cache, String inputLine) {
+        cache.put(inputLine, getLineCountingWords(inputLine));
+    }
+
+    private static void getResultMessage(HashMap<String, String> cache, String inputLine) {
+        if (isContainsKeys(cache, inputLine)) {
+            System.out.println(cache.get(inputLine));
+        } else {
+            addedToMap(cache, inputLine);
+            System.out.println("\n" + cache.get(inputLine));
+        }
     }
 }
